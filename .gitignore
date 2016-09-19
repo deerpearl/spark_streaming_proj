@@ -1,0 +1,29 @@
+ass
+*.log
+
+# sbt specific
+.cache
+.conf
+.history
+.lib/
+dist/*
+target/
+lib_managed/
+src_managed/
+project/boot/
+project/plugins/project/
+
+# other folders
+_checkpoint/
+archive/
+archive1/
+newop*/
+output*/
+
+# Scala-IDE specific
+.scala_dependencies
+.worksheet
+
+# ENSIME specific
+.ensime_cache/
+.ensime
