@@ -5,6 +5,7 @@ ass
 .cache
 .conf
 .history
+.idea/
 .lib/
 dist/*
 target/
