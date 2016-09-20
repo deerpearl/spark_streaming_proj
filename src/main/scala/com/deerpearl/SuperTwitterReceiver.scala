@@ -1,5 +1,7 @@
 package com.deerpearl
 
+//Note: this is class is not used
+
 import org.apache.spark.Logging
 import org.apache.spark.storage.StorageLevel
 import org.apache.spark.streaming.receiver.Receiver
@@ -30,7 +32,7 @@ class SuperTwitterReceiver() extends Receiver[String](StorageLevel.MEMORY_ONLY) 
 
     val twitterStream = new TwitterStreamFactory(SuperUtil.config).getInstance
     twitterStream.addListener(SuperUtil.simpleStatusListener)
-    twitterStream.sample //yi: this is where the output to console
+    twitterStream.sample //Note: this is where the output to console
     Thread.sleep(2000)
 
   }

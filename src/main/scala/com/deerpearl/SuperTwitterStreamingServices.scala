@@ -100,7 +100,7 @@ trait SuperTwitterStreamingServices extends Serializable {
 
     ssc.checkpoint(sparkCheckpoint)
 
-    dsStream.saveAsTextFiles("newop") //yi: this does creating files and output to console
+    dsStream.saveAsTextFiles("newop") //Note: this does creating files and output to console
 
     ssc.start()
   }

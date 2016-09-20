@@ -18,7 +18,7 @@ object SuperTwitterStreamingApp {
     //borrowed from deerpearl
 /*
     val stream = ssc.receiverStream(new SuperTwitterReceiver())
-    stream.print() //Yi: it seems like this is not the output to console
+    stream.print() //Note: it seems like this is not the output to console
     if (args.length > 1 ){
       stream.saveAsTextFiles(args(1))
     }
