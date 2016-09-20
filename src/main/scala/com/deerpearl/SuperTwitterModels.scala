@@ -1,5 +1,8 @@
 package com.deerpearl
 
+import java.util.UUID
+
+
 /**
   * Created by deerpearl on 9/5/16.
   */
@@ -16,7 +19,7 @@ case class TweetsByDay(id: String,
                        longitude: Option[Double])
 
 case class TweetsByTrack(
-                          id: Int,
+                          id: UUID,
                           track: String,
                           year: Int,
                           month: Int,

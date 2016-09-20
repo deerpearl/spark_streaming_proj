@@ -4,7 +4,9 @@ package com.deerpearl.twitter.domain
 import com.deerpearl.{TweetsByDay, TweetsByTrack}
 import org.apache.spark.streaming.Time
 import org.joda.time.{DateTime, DateTimeZone}
-import twitter4j.Status
+import com.datastax.driver.core.utils.UUIDs
+
+
 /**
   * Created by deerpearl on 9/12/16.
   */
@@ -30,7 +32,7 @@ object Conversions {
 */
   def toTweetsByTrack(dateParts: Array[Int], track: String, count: Long): TweetsByTrack = {
     TweetsByTrack(
-      id = 1,
+      id = UUIDs.timeBased(),
       track = track,
       year = dateParts(0),
       month = dateParts(1),
