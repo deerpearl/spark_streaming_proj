@@ -94,7 +94,6 @@ trait SuperTwitterStreamingServices extends Serializable {
 
     //val sparkCheckpoint = "hdfs://namenode:9000/checkpoint"
 
-    println("+++++++++++++++++++++++++++++++++after tweetsByTrack.saveToCassandra dsStream to string");
     println(dsStream.toString());
     val sparkCheckpoint = "_checkpoint"
 

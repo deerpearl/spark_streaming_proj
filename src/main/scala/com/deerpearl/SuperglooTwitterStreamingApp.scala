@@ -14,20 +14,6 @@ object SuperTwitterStreamingApp {
     implicit val ssc = new StreamingContext(conf, Seconds(5))
     val twitterStreamingServices: SuperTwitterStreamingServices = new SuperTwitterStreamingServices {}
 
-
-    //borrowed from deerpearl
-/*
-    val stream = ssc.receiverStream(new SuperTwitterReceiver())
-    stream.print() //Note: it seems like this is not the output to console
-    if (args.length > 1 ){
-      stream.saveAsTextFiles(args(1))
-    }
-    ssc.start()
-    ssc.awaitTermination()
-*/
-
-    // try 'spark on code' here
-
     val filters = Set("scala", "play", "akka", "spark" , "47", "global", "consulting")
     val windowSizeSeconds = 30
     val slideDuration = 10
