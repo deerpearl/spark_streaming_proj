@@ -10,11 +10,14 @@ import twitter4j.auth.OAuthAuthorization
 import twitter4j.conf.ConfigurationBuilder
 import twitter4j._
 import com.deerpearl.common.config.ConfigRegistry._
+import com.deerpearl.common.StaticValues
 import com.deerpearl.twitter.domain.Conversions._
 import com.datastax.spark.connector.streaming._
 import com.datastax.spark.connector.SomeColumns
 
 import scala.language.postfixOps
+import java.util.Properties
+import org.apache.kafka.clients.producer.{KafkaProducer, ProducerConfig, ProducerRecord}
 
 trait SuperTwitterStreamingServices extends Serializable {
 
@@ -52,8 +55,6 @@ trait SuperTwitterStreamingServices extends Serializable {
        dsStream: DStream[Status]) = {
     dsStream.print()
 
-    // tweetsByTrack -> kafka
-    //writeToKafka(tweetsByTrack)
 /*
     val tweetsByDay: DStream[TweetsByDay] = getTweetsByDay(dsStream)
 
@@ -76,9 +77,11 @@ trait SuperTwitterStreamingServices extends Serializable {
         "longitude"))
 */
 
-    // tweetsByTrack -> streaming_tweets_by_track
     val tweetsByTrack: DStream[TweetsByTrack] = getTweetsByTrack(dsStream, topics, windowSize, slideDuration)
+    // tweetsByTrack -> kafka
+    writeToKafka(tweetsByTrack)
 
+    // tweetsByTrack -> streaming_tweets_by_track
     tweetsByTrack.saveToCassandra(
       sparkCassandraKeyspace,
       "streaming_tweets_by_track",
@@ -103,15 +106,18 @@ trait SuperTwitterStreamingServices extends Serializable {
 
     ssc.start()
   }
-/*
+
   def writeToKafka(dStream: DStream[TweetsByTrack]) =
     dStream.map(_.track).foreachRDD { rdd =>
       rdd foreachPartition { partition =>
         lazy val kafkaProducerParams = new Properties()
 
-        val kafkaBootstrapServersFromEnv = sys.env.getOrElse("kafkaBootstrapServers", "")
-        val kafkaProducerKeySerializerFromEnv = sys.env.getOrElse("kafkaProducerKeySerializer", "")
-        val kafkaProducerValueSerializerFromEnv = sys.env.getOrElse("kafkaProducerValueSerializer", "")
+        val kafkaBootstrapServersFromEnv = "127.0.0.1:9092" //kafkaBootstrapServers // sys.env.getOrElse("kafkaBootstrapServers", "")
+        val kafkaProducerKeySerializerFromEnv = kafkaProducerKeySerializer //sys.env.getOrElse("kafkaProducerKeySerializer", "")
+        val kafkaProducerValueSerializerFromEnv = kafkaProducerValueSerializer  //sys.env.getOrElse("kafkaProducerValueSerializer", "")
+
+        println("++++++++++++++++++kafkaProducerValueSerializerFromEnv++++++++++++++++++++++++")
+        println(kafkaProducerValueSerializerFromEnv)
 
         kafkaProducerParams.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaBootstrapServersFromEnv)
         kafkaProducerParams.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, kafkaProducerKeySerializerFromEnv)
@@ -126,7 +132,7 @@ trait SuperTwitterStreamingServices extends Serializable {
         }
       }
     }
-*/
+
 
 /*
   def getTweetsByDay(dsStream: DStream[Status]): DStream[TweetsByDay] = dsStream.map(toTweetsByDay)

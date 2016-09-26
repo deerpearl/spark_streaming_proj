@@ -1,6 +1,7 @@
 package com.deerpearl
 
 import org.apache.spark.SparkConf
+import com.deerpearl.common.config.ConfigRegistry._
 import org.apache.spark.streaming.{Seconds, StreamingContext}
 
 object SuperTwitterStreamingApp {
@@ -11,6 +12,10 @@ object SuperTwitterStreamingApp {
     val conf = new SparkConf().setMaster(args(0)).setAppName("SuperTwitterStreaming")
       .set("spark.rpc.netty.dispatcher.numThreads","2")
       .set("spark.cassandra.connection.host", "127.0.0.1")
+      .set("spark.executorEnv.kafkaBootstrapServers", "127.0.0.1:9092") //kafkaBootstrapServers) //bootstrapServers)
+      .set("spark.executorEnv.kafkaProducerKeySerializer", kafkaProducerKeySerializer)
+      .set("spark.executorEnv.kafkaProducerValueSerializer", kafkaProducerValueSerializer)
+
     implicit val ssc = new StreamingContext(conf, Seconds(5))
     val twitterStreamingServices: SuperTwitterStreamingServices = new SuperTwitterStreamingServices {}
 
