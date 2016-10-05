@@ -6,12 +6,13 @@ import org.apache.spark.streaming.Time
 import org.joda.time.{DateTime, DateTimeZone}
 import com.datastax.driver.core.utils.UUIDs
 
+import twitter4j.Status
 
 /**
   * Created by deerpearl on 9/12/16.
   */
 object Conversions {
-  /*
+
   def toTweetsByDay(statusRDD: Status): TweetsByDay = {
     val user = statusRDD.getUser
     val geoLocation = Option(statusRDD.getGeoLocation)
@@ -23,13 +24,13 @@ object Conversions {
       createdTimestamp = formatMillis(user.getCreatedAt.getTime),
       createdDay = formatMillis(user.getCreatedAt.getTime, "yyyyMMdd"),
       tweetText = statusRDD.getText,
-      lang = statusRDD.getLang,
-      retweetCount = statusRDD.getRetweetCount,
-      favoriteCount = statusRDD.getFavoriteCount,
+      //lang = statusRDD.getLang, //TODO: figure out later why getLang is not recognized
+      //retweetCount = statusRDD.getRetweetCount,
+      //favoriteCount = statusRDD.getFavoriteCount,
       latitude = geoLocation map (_.getLatitude),
       longitude = geoLocation map (_.getLongitude))
   }
-*/
+
   def toTweetsByTrack(dateParts: Array[Int], track: String, count: Long): TweetsByTrack = {
     TweetsByTrack(
       id = UUIDs.timeBased(),

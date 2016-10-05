@@ -12,9 +12,9 @@ case class TweetsByDay(id: String,
                        createdTimestamp: String,
                        createdDay: String,
                        tweetText: String,
-                       lang: String,
-                       retweetCount: Int,
-                       favoriteCount: Int,
+                       //lang: String,
+                       //retweetCount: Int,
+                       //favoriteCount: Int,
                        latitude: Option[Double],
                        longitude: Option[Double])
 

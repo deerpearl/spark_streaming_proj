@@ -55,7 +55,7 @@ trait SuperTwitterStreamingServices extends Serializable {
        dsStream: DStream[Status]) = {
     dsStream.print()
 
-/*
+
     val tweetsByDay: DStream[TweetsByDay] = getTweetsByDay(dsStream)
 
     // tweetsByDay -> streaming_tweets_by_day
@@ -70,12 +70,12 @@ trait SuperTwitterStreamingServices extends Serializable {
         "created_timestamp",
         "created_day",
         "tweet_text",
-        "lang",
-        "retweet_count",
-        "favorite_count",
+//        "lang",
+//        "retweet_count",
+//        "favorite_count",
         "latitude",
         "longitude"))
-*/
+
 
     val tweetsByTrack: DStream[TweetsByTrack] = getTweetsByTrack(dsStream, topics, windowSize, slideDuration)
     // tweetsByTrack -> kafka
@@ -116,8 +116,11 @@ trait SuperTwitterStreamingServices extends Serializable {
         val kafkaProducerKeySerializerFromEnv = kafkaProducerKeySerializer //sys.env.getOrElse("kafkaProducerKeySerializer", "")
         val kafkaProducerValueSerializerFromEnv = kafkaProducerValueSerializer  //sys.env.getOrElse("kafkaProducerValueSerializer", "")
 
-        println("++++++++++++++++++kafkaProducerValueSerializerFromEnv++++++++++++++++++++++++")
-        println(kafkaProducerValueSerializerFromEnv)
+//        println("++++++++++++++++++kafkaProducerValueSerializerFromEnv++++++++++++++++++++++++")
+//        println(kafkaProducerValueSerializerFromEnv)
+
+        println("++++++++++++++++++ partition ++++++++++++++++++++++++")
+        println(partition)
 
         kafkaProducerParams.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaBootstrapServersFromEnv)
         kafkaProducerParams.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, kafkaProducerKeySerializerFromEnv)
@@ -134,9 +137,9 @@ trait SuperTwitterStreamingServices extends Serializable {
     }
 
 
-/*
+
   def getTweetsByDay(dsStream: DStream[Status]): DStream[TweetsByDay] = dsStream.map(toTweetsByDay)
-*/
+
   def getTweetsByTrack(dsStream: DStream[Status],
       topics: Set[String],
       windowSize: Duration,
