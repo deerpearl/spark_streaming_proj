@@ -70,7 +70,7 @@ trait SuperTwitterStreamingServices extends Serializable {
         "created_timestamp",
         "created_day",
         "tweet_text",
-//        "lang",
+        "lang",
 //        "retweet_count",
 //        "favorite_count",
         "latitude",
@@ -138,7 +138,9 @@ trait SuperTwitterStreamingServices extends Serializable {
 
 
 
-  def getTweetsByDay(dsStream: DStream[Status]): DStream[TweetsByDay] = dsStream.map(toTweetsByDay)
+  def getTweetsByDay(dsStream: DStream[Status]): DStream[TweetsByDay] =
+    dsStream.filter(_.getLang == "ja")
+    .map(toTweetsByDay)
 
   def getTweetsByTrack(dsStream: DStream[Status],
       topics: Set[String],

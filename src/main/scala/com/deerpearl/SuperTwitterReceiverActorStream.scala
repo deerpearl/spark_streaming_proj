@@ -29,7 +29,8 @@ class SuperTwitterReceiverActorStream[T: ClassTag](
       case Nil => twitterStream.sample()
       case _ =>
         val query = new FilterQuery
-        query.track(filters.toArray)
+//        query.track(filters.toArray)
+        query.track(filters.toString())
         twitterStream.filter(query)
     }
   }

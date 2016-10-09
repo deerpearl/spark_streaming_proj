@@ -24,7 +24,7 @@ object Conversions {
       createdTimestamp = formatMillis(user.getCreatedAt.getTime),
       createdDay = formatMillis(user.getCreatedAt.getTime, "yyyyMMdd"),
       tweetText = statusRDD.getText,
-      //lang = statusRDD.getLang, //TODO: figure out later why getLang is not recognized
+      lang = statusRDD.getLang, //statusRDD.getLang is not working. statusRDD.getUser().getLang() works
       //retweetCount = statusRDD.getRetweetCount,
       //favoriteCount = statusRDD.getFavoriteCount,
       latitude = geoLocation map (_.getLatitude),
