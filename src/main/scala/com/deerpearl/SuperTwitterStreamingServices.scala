@@ -29,7 +29,7 @@ trait SuperTwitterStreamingServices extends Serializable {
     cassandraServices.createSchema(sparkCassandraKeyspace, cassandraCQLPath)
 */
     def createTwitterStream(
-      filters: List[String] = Nil,
+      filters: List[String] = sparkOnFilters,
       storageLevel: StorageLevel = StorageLevel.MEMORY_AND_DISK_SER)(implicit ssc: StreamingContext) = {
     val authorization = new OAuthAuthorization(new ConfigurationBuilder()
         .setOAuthConsumerKey(twitterAuth.consumerKey)
@@ -139,7 +139,7 @@ trait SuperTwitterStreamingServices extends Serializable {
 
 
   def getTweetsByDay(dsStream: DStream[Status]): DStream[TweetsByDay] =
-    dsStream.filter(_.getLang == "ja")
+    dsStream.filter(_.getLang == "en")
     .map(toTweetsByDay)
 
   def getTweetsByTrack(dsStream: DStream[Status],

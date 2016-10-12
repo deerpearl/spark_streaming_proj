@@ -25,13 +25,23 @@ class SuperTwitterReceiverActorStream[T: ClassTag](
 
   override def preStart(): Unit = {
     twitterStream.addListener(listener)
+
+    println("+++++++++++++++" + filters)
     filters match {
       case Nil => twitterStream.sample()
+        println("+++++++++++++++ inside Nil")
       case _ =>
+        println("+++++++++++++++ inside filter query")
+
         val query = new FilterQuery
-//        query.track(filters.toArray)
-        query.track(filters.toString())
+        //// query.track(filters.toArray) // compile error
+
+        query.track(filters.toString()) // no compile error, but no data saved into
+
+//        query.track("JCPENNEY")
         twitterStream.filter(query)
+
+
     }
   }
 

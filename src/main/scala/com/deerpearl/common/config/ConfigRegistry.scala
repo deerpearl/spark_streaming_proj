@@ -33,6 +33,8 @@ object ConfigRegistry {
   lazy val sparkCassandraKeyspace: String = config.getString("spark.cassandra.keyspace")
 
   lazy val sparkOnConfig = config.getConfig("spark-on")
+
+  lazy val sparkOnFilters = sparkOnConfig.getStringList("filters").asScala.toList
   /*
   lazy val sparkOnFilters = sparkOnConfig.getStringList("filters").asScala.toSet
   lazy val windowSizeSeconds = sparkOnConfig.getLong("windowSizeSeconds")
