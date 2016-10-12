@@ -19,7 +19,7 @@ object SuperTwitterStreamingApp {
     implicit val ssc = new StreamingContext(conf, Seconds(5))
     val twitterStreamingServices: SuperTwitterStreamingServices = new SuperTwitterStreamingServices {}
 
-    val filters = Set("trump") //Set("scala", "play", "akka", "spark" , "47", "global", "consulting")
+    val filters = Set("scala", "play", "akka", "spark" , "47", "global", "consulting") //this filter is not used in twitterstream
     val windowSizeSeconds = 30
     val slideDuration = 10
 
