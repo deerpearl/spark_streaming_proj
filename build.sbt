@@ -19,6 +19,9 @@ libraryDependencies ++= Seq("org.apache.spark" % "spark-streaming_2.11" % "1.6.1
 //  "org.apache.kafka" % "kafka_2.10" % "0.8.0"
 //  "org.apache.kafka" % "kafka-clients" % "0.10.0.1"
   , "org.apache.spark" %% "spark-streaming-kafka" % "1.6.0"
+  , "edu.stanford.nlp" % "stanford-corenlp" % "3.6.0"
+  , "edu.stanford.nlp" % "stanford-corenlp" % "3.6.0" classifier "models"
 )
 
 libraryDependencies +=  "org.twitter4j" % "twitter4j-core" % "4.0.5"
+

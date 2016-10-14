@@ -8,12 +8,17 @@ import com.datastax.driver.core.utils.UUIDs
 
 import twitter4j.Status
 
+import com.deerpearl.sentiment.SentimentAnalyzer
+
 /**
   * Created by deerpearl on 9/12/16.
   */
 object Conversions {
 
   def toTweetsByDay(statusRDD: Status): TweetsByDay = {
+//    val sen = SentimentAnalyzer.sentiment("")
+    println("++++++++ sentiment: " + SentimentAnalyzer.sentiment(statusRDD.getText))
+
     val user = statusRDD.getUser
     val geoLocation = Option(statusRDD.getGeoLocation)
     TweetsByDay(
