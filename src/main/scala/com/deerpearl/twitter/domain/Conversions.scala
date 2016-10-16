@@ -17,10 +17,14 @@ object Conversions {
 
   def toTweetsByDay(statusRDD: Status): TweetsByDay = {
 //    val sen = SentimentAnalyzer.sentiment("")
-    println("++++++++ sentiment: " + SentimentAnalyzer.sentiment(statusRDD.getText))
+    println("++++++++ sentiment : " + SentimentAnalyzer.mainSentiment(statusRDD.getText))
 
     val user = statusRDD.getUser
+    println("++++++++ user location: " + user.getLocation)
+
     val geoLocation = Option(statusRDD.getGeoLocation)
+    println("++++++++ user geolocation: " + statusRDD.getGeoLocation)
+
     TweetsByDay(
       id = statusRDD.getId.toString,
       userId = user.getId,

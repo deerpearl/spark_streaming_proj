@@ -30,7 +30,7 @@ class SuperTwitterReceiverActorStream[T: ClassTag](
       case _ =>
         val query = new FilterQuery
         //// query.track(filters.toArray) // compile error
-        query.track(filters mkString(" "))
+        query.track(filters mkString(", "))
         twitterStream.filter(query)
 
     }
