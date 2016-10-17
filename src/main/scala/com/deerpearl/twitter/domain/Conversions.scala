@@ -25,19 +25,22 @@ object Conversions {
     val geoLocation = Option(statusRDD.getGeoLocation)
     println("++++++++ user geolocation: " + statusRDD.getGeoLocation)
 
+
     TweetsByDay(
       id = statusRDD.getId.toString,
       userId = user.getId,
       userName = user.getName,
       userScreenName = user.getScreenName,
-      createdTimestamp = formatMillis(user.getCreatedAt.getTime),
-      createdDay = formatMillis(user.getCreatedAt.getTime, "yyyyMMdd"),
+      userLocation = user.getLocation,
+      createdTimestamp = formatMillis(statusRDD.getCreatedAt.getTime),
+      //createdDay = formatMillis(statusRDD.getCreatedAt.getTime, "yyyyMMdd"),
       tweetText = statusRDD.getText,
-      lang = statusRDD.getLang, //statusRDD.getLang is not working. statusRDD.getUser().getLang() works
+      lang = statusRDD.getLang //statusRDD.getLang is not working. statusRDD.getUser().getLang() works
       //retweetCount = statusRDD.getRetweetCount,
       //favoriteCount = statusRDD.getFavoriteCount,
-      latitude = geoLocation map (_.getLatitude),
-      longitude = geoLocation map (_.getLongitude))
+      //latitude = geoLocation map (_.getLatitude),
+      //longitude = geoLocation map (_.getLongitude)
+      )
   }
 
   def toTweetsByTrack(dateParts: Array[Int], track: String, count: Long): TweetsByTrack = {

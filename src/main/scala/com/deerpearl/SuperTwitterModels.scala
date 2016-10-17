@@ -7,16 +7,19 @@ import java.util.UUID
   * Created by deerpearl on 9/5/16.
   */
 case class TweetsByDay(id: String,
-                       userId: Long, userName: String,
+                       userId: Long,
+                       userName: String,
                        userScreenName: String,
                        createdTimestamp: String,
-                       createdDay: String,
+                       userLocation: String,
+                       //createdDay: String,
                        tweetText: String,
-                       lang: String,
+                       lang: String
                        //retweetCount: Int,
                        //favoriteCount: Int,
-                       latitude: Option[Double],
-                       longitude: Option[Double])
+                       //latitude: Option[Double],
+                       //longitude: Option[Double]
+                      )
 
 case class TweetsByTrack(
                           id: UUID,

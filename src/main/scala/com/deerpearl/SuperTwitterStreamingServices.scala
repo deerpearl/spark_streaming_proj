@@ -67,14 +67,16 @@ trait SuperTwitterStreamingServices extends Serializable {
         "user_id",
         "user_name",
         "user_screen_name",
+        "user_location",
         "created_timestamp",
-        "created_day",
+//        "created_day",
         "tweet_text",
-        "lang",
+        "lang"
 //        "retweet_count",
 //        "favorite_count",
-        "latitude",
-        "longitude"))
+//        "latitude",
+//        "longitude"
+        ))
 
 
     val tweetsByTrack: DStream[TweetsByTrack] = getTweetsByTrack(dsStream, topics, windowSize, slideDuration)
@@ -139,7 +141,7 @@ trait SuperTwitterStreamingServices extends Serializable {
 
 
   def getTweetsByDay(dsStream: DStream[Status]): DStream[TweetsByDay] =
-    dsStream.filter(_.getLang == "en")
+    dsStream.filter(_.getLang == "en").filter(_.getUser.getLocation != null)
     .map(toTweetsByDay)
 
   def getTweetsByTrack(dsStream: DStream[Status],
