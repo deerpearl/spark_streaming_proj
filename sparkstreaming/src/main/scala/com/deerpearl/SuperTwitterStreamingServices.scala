@@ -71,7 +71,8 @@ trait SuperTwitterStreamingServices extends Serializable {
         "created_timestamp",
 //        "created_day",
         "tweet_text",
-        "lang"
+        "lang",
+        "sentiment"
 //        "retweet_count",
 //        "favorite_count",
 //        "latitude",

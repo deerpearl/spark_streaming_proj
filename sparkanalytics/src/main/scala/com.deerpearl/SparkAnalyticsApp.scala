@@ -43,7 +43,7 @@ object SparkAnalyticsApp {
     val sc = new SparkContext(conf)
 
     val rdd = sc.cassandraTable("super_gloo", "streaming_tweets_by_day")
-   // rdd.foreach(println)
+    rdd.foreach(println)
 
   }
  

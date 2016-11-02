@@ -14,7 +14,8 @@ case class TweetsByDay(id: String,
                        userLocation: String,
                        //createdDay: String,
                        tweetText: String,
-                       lang: String
+                       lang: String,
+                       sentiment: String
                        //retweetCount: Int,
                        //favoriteCount: Int,
                        //latitude: Option[Double],
