@@ -2,28 +2,38 @@ package com.deerpearl
 
 import org.apache.spark.{SparkConf, SparkContext}
 import com.datastax.spark.connector._
-
-import com.datastax.driver.core.querybuilder.QueryBuilder._ // this is the only one used for CassandraConnectionUri part
+import org.apache.spark.rdd.RDD
+import org.json4s._
+import org.json4s.JsonDSL._
+import org.json4s.jackson.JsonMethods._
+import com.datastax.driver.core.querybuilder.QueryBuilder._
+import org.apache.spark.sql.Row // this is the only one used for CassandraConnectionUri part
 
 
 object SparkAkkaHttpAnalytics {
 
 
-  def gettwitterdata() {
+  def gettwitterdata():String = {
 
     val uri = CassandraConnectionUri("cassandra://localhost:9042/super_gloo")
     val session = Helper.createSessionAndInitKeyspace(uri)
 
-    val selectStmt = select().column("tweet_text")
+    val selectStmt = select("sentiment", "user_location") //.column("sentiment")
       .from("streaming_tweets_by_day")
-      .limit(1)
+    //      .limit(1)
 
     val resultSet = session.execute(selectStmt)
-    val row = resultSet.one()
+    val rs = resultSet.all()
 
-    print(row.toString)
+    /*
+    while (rs.iterator().hasNext()) {
+      val row = rs.iterator().next()
+      json = json + "{sentiment: " + row.getObject(0) +
+      "localtion: " + row.getObject(1) + "}"
+    }
+*/
 
-
+    //-- 2) second way to get cassandra data
     val conf = new SparkConf(true)
       .setMaster("local[2]").setAppName("SparkAnalyticsModule")
       .set("spark.cassandra.connection.host", "127.0.0.1")
@@ -31,8 +41,17 @@ object SparkAkkaHttpAnalytics {
     val sc = new SparkContext(conf)
 
     val rdd = sc.cassandraTable("super_gloo", "streaming_tweets_by_day")
-    rdd.foreach(println)
+      .select("sentiment", "user_location")
+      .keyBy[(String, String)]("sentiment", "user_location")
 
+    val json = "results" -> rdd.collect().toList.map{
+      case (sen, loc) =>
+          ("sentiment", sen.toString()) ~
+          ("location",  loc.toString())
+
+    }
+
+    json.toString()
   }
  
 }

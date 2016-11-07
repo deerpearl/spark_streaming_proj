@@ -27,7 +27,7 @@ import spray.json._
 
 case class IpInfo(query: String, country: Option[String], city: Option[String], lat: Option[Double], lon: Option[Double])
 
-case class twitterinfo (query: String)
+case class Twitterinfo (query: String)
 
 case class IpPairSummaryRequest(ip1: String, ip2: String)
 
@@ -55,6 +55,7 @@ object IpPairSummary {
 }
 
 trait Protocols extends DefaultJsonProtocol {
+  implicit val twitterIpInfoFormat = jsonFormat1(Twitterinfo.apply)
   implicit val ipInfoFormat = jsonFormat5(IpInfo.apply)
   implicit val ipPairSummaryRequestFormat = jsonFormat2(IpPairSummaryRequest.apply)
   implicit val ipPairSummaryFormat = jsonFormat3(IpPairSummary.apply)
@@ -74,20 +75,12 @@ trait Service extends Protocols {
   def ipApiRequest(request: HttpRequest): Future[HttpResponse] = Source.single(request).via(ipApiConnectionFlow).runWith(Sink.head)
 
   def fetchIpInfo(ip: String): Future[Either[String, IpInfo]] = {
-    /*
-    ipApiRequest(RequestBuilding.Get(s"/json/$ip")).flatMap { response =>
-      response.status match {
-        case OK => Unmarshal(response.entity).to[IpInfo].map(Right(_))
-        case BadRequest => Future.successful(Left(s"$ip: incorrect IP format"))
-        case _ => Unmarshal(response.entity).to[String].flatMap { entity =>
-          val error = s"FreeGeoIP request failed with status code ${response.status} and entity $entity"
-          logger.error(error)
-          Future.failed(new IOException(error))
-        }
-      }
-    }
-    */
     Unmarshal("{\"query\": \"result\"}").to[IpInfo].map(Right(_))
+  }
+
+  def fetchTwitterInfo(ip: String): Future[Either[String, Twitterinfo]] = {
+    val twitter = SparkAkkaHttpAnalytics.gettwitterdata()
+    Unmarshal("{\"query\": \"" + twitter + "\"}").to[Twitterinfo].map(Right(_))
   }
 
   val routes = {
@@ -95,7 +88,7 @@ trait Service extends Protocols {
       pathPrefix("ip") {
         (get & path(Segment)) { ip =>
           complete {
-            fetchIpInfo(ip)
+            fetchTwitterInfo(ip)
             /*
             fetchIpInfo(ip).map[ToResponseMarshallable] {
               case Right(ipInfo) => ipInfo
