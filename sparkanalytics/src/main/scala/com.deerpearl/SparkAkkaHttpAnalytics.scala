@@ -51,7 +51,7 @@ object SparkAkkaHttpAnalytics {
 
     }
 
-    json.toString()
+    compact(render(json))
   }
  
 }
