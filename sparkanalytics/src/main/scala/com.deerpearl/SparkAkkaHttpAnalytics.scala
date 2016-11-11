@@ -13,8 +13,8 @@ import org.apache.spark.sql.Row // this is the only one used for CassandraConnec
 object SparkAkkaHttpAnalytics {
 
 
-  def gettwitterdata():String = {
-
+  def gettwitterdata(sc:SparkContext):String = {
+/*
     val uri = CassandraConnectionUri("cassandra://localhost:9042/super_gloo")
     val session = Helper.createSessionAndInitKeyspace(uri)
 
@@ -24,21 +24,7 @@ object SparkAkkaHttpAnalytics {
 
     val resultSet = session.execute(selectStmt)
     val rs = resultSet.all()
-
-    /*
-    while (rs.iterator().hasNext()) {
-      val row = rs.iterator().next()
-      json = json + "{sentiment: " + row.getObject(0) +
-      "localtion: " + row.getObject(1) + "}"
-    }
-*/
-
-    //-- 2) second way to get cassandra data
-    val conf = new SparkConf(true)
-      .setMaster("local[2]").setAppName("SparkAnalyticsModule")
-      .set("spark.cassandra.connection.host", "127.0.0.1")
-
-    val sc = new SparkContext(conf)
+  */
 
     val rdd = sc.cassandraTable("super_gloo", "streaming_tweets_by_day")
       .select("sentiment", "user_location")
@@ -46,9 +32,7 @@ object SparkAkkaHttpAnalytics {
 
     val json = "results" -> rdd.collect().toList.map{
       case (sen, loc) =>
-          ("sentiment", sen.toString()) ~
-          ("location",  loc.toString())
-
+        ("record", sen)
     }
 
     compact(render(json))
